@@ -138,6 +138,7 @@ class _DashBoardViewState extends State<DashBoardView> {
 
   SingleChildScrollView buildRecentItems(Size size) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       scrollDirection: Axis.horizontal,
       child: Padding(
         padding: EdgeInsets.all(8.0),
