@@ -9,6 +9,9 @@ class DashBoardView extends StatefulWidget {
 
 class _DashBoardViewState extends State<DashBoardView> {
   bool isStockEmpty = false;
+  String dropdownValue = 'Tümü';
+  List<String> dropdownValues = ["Tümü", "Güncellenen", "Eklenen", "Silinen"];
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -20,7 +23,6 @@ class _DashBoardViewState extends State<DashBoardView> {
         ),
         slivers: [
           buildSliverAppBar(
-            context: context,
             text: 'Gösterge Paneli',
           ),
           SliverList(
@@ -28,7 +30,7 @@ class _DashBoardViewState extends State<DashBoardView> {
               [
                 buildInventorySummaryDeckTopic(text: 'Envanter Özeti'),
                 buildInventorySummaryDeck(size),
-                buildRecentItemsDeckTopic(text: 'SON ÜRÜNLER'),
+                buildRecentItemsDeckTopic(text: 'Son Hareketler'),
                 buildRecentItemsDeck(size),
               ],
             ),
@@ -38,8 +40,7 @@ class _DashBoardViewState extends State<DashBoardView> {
     );
   }
 
-  SliverAppBar buildSliverAppBar(
-      {@required BuildContext context, @required String text}) {
+  SliverAppBar buildSliverAppBar({@required String text}) {
     return SliverAppBar(
       collapsedHeight: 56,
       backgroundColor: Colors.white,
@@ -118,10 +119,47 @@ class _DashBoardViewState extends State<DashBoardView> {
   Padding buildRecentItemsDeckTopic({@required String text}) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Text(
-        text,
-        textAlign: TextAlign.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+          ),
+          buildDropdownMenuWithText(),
+        ],
       ),
+    );
+  }
+
+  Stack buildDropdownMenuWithText() {
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        Positioned(
+          right: 30,
+          child: Text(
+            dropdownValue,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
+        DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            isDense: true,
+            icon: Icon(Icons.tune, color: Colors.black),
+            items: List.generate(
+              4,
+              (index) => DropdownMenuItem(
+                  child: Text(dropdownValues[index]),
+                  value: dropdownValues[index]),
+            ),
+            onChanged: (value) {
+              setState(() {
+                dropdownValue = value;
+              });
+            },
+          ),
+        ),
+      ],
     );
   }
 
