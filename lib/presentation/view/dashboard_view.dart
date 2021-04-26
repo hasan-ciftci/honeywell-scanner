@@ -15,7 +15,9 @@ class _DashBoardViewState extends State<DashBoardView> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         slivers: [
           buildSliverAppBar(
             context: context,
