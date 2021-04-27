@@ -63,27 +63,27 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: _handleScrollNotification,
-      child: Scaffold(
-        floatingActionButton: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            AnimatedPositioned(
-              curve: Curves.fastOutSlowIn,
-              bottom: fabBottomInset,
-              right: 20,
-              duration: Duration(milliseconds: 400),
-              child: FloatingActionButton(
-                backgroundColor: Colors.red,
-                elevation: 8,
-                onPressed: () {},
-                child: Icon(Icons.add),
-              ),
+    return Scaffold(
+      floatingActionButton: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          AnimatedPositioned(
+            curve: Curves.fastOutSlowIn,
+            bottom: fabBottomInset,
+            right: 20,
+            duration: Duration(milliseconds: 400),
+            child: FloatingActionButton(
+              backgroundColor: Colors.red,
+              elevation: 8,
+              onPressed: () {},
+              child: Icon(Icons.add),
             ),
-          ],
-        ),
-        body: CustomScrollView(
+          ),
+        ],
+      ),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: _handleScrollNotification,
+        child: CustomScrollView(
           controller: _sliverScrollController,
           physics:
               BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
