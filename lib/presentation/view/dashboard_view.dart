@@ -1,6 +1,9 @@
+import 'package:envanter/presentation/bloc/dashboard/dashboard_cubit.dart';
+import 'package:envanter/presentation/bloc/dashboard/dashboard_state.dart';
 import 'package:envanter/presentation/widgets/dashboard_card.dart';
 import 'package:envanter/presentation/widgets/recent_item_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashBoardView extends StatefulWidget {
   @override
@@ -15,27 +18,61 @@ class _DashBoardViewState extends State<DashBoardView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: CustomScrollView(
-        physics: BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        slivers: [
-          buildSliverAppBar(
-            text: 'Gösterge Paneli',
+    return BlocListener<DashboardCubit, DashboardState>(
+      listener: (BuildContext context, state) {
+        if (state is OpenBottomModelState) {
+          showModalBottomSheet(
+            isDismissible: false,
+            context: context,
+            builder: (BuildContext ctx) {
+              return buildBottomModalSheet(ctx);
+            },
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+        body: CustomScrollView(
+          physics: BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                buildInventorySummaryDeckTopic(text: 'Envanter Özeti'),
-                buildInventorySummaryDeck(size),
-                buildRecentItemsDeckTopic(text: 'Son Hareketler'),
-                buildRecentItemsDeck(size),
-              ],
+          slivers: [
+            buildSliverAppBar(
+              text: 'Gösterge Paneli',
             ),
-          ),
-        ],
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  buildInventorySummaryDeckTopic(text: 'Envanter Özeti'),
+                  buildInventorySummaryDeck(size),
+                  buildRecentItemsDeckTopic(text: 'Son Hareketler'),
+                  buildRecentItemsDeck(size),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container buildBottomModalSheet(BuildContext ctx) {
+    return Container(
+      height: 200,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Text('Modal BottomSheet'),
+            ElevatedButton(
+                child: const Text('Close BottomSheet'),
+                onPressed: () {
+                  context.read<DashboardCubit>().interactBottomModal();
+                  Navigator.pop(ctx);
+                })
+          ],
+        ),
       ),
     );
   }
@@ -185,11 +222,16 @@ class _DashBoardViewState extends State<DashBoardView> {
             5,
             (index) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.0),
-                child: RecentItemCard(
-                  itemId: 'SWVT49RE033',
-                  itemName: 'Apple Macbook Air 128 gb',
-                  quantity: (index + 1).toString(),
-                  size: size,
+                child: GestureDetector(
+                  onTap: () {
+                    context.read<DashboardCubit>().interactBottomModal();
+                  },
+                  child: RecentItemCard(
+                    itemId: 'SWVT49RE033',
+                    itemName: 'Apple Macbook Air 128 gb',
+                    quantity: (index + 1).toString(),
+                    size: size,
+                  ),
                 )),
           ),
         ),
