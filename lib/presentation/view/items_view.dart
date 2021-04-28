@@ -1,8 +1,12 @@
 import 'dart:ui';
 
+import 'package:envanter/core/constants/enum.dart';
+import 'package:envanter/presentation/bloc/navigation/bottom_navbar_cubit.dart';
+import 'package:envanter/presentation/widgets/item_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ItemsView extends StatefulWidget {
   @override
@@ -13,8 +17,7 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
   final ScrollController _sliverScrollController = ScrollController();
 
   var isPrimary = false;
-  double fabBottomInset = 60;
-  bool isUserScrolledDown = false;
+  double fabBottomInset = 0;
   bool isGridViewActivated = false;
 
   @override
@@ -28,14 +31,9 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size;
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
-      child: Stack(
-        children: [
-          Scaffold(
-            floatingActionButton: buildAnimatedFAB(),
-            body: buildBody(context, size),
-          ),
-          buildBottomAppBar(),
-        ],
+      child: Scaffold(
+        floatingActionButton: buildAnimatedFAB(),
+        body: buildBody(context, size),
       ),
     );
   }
@@ -45,7 +43,7 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
       clipBehavior: Clip.none,
       children: [
         AnimatedPositioned(
-          curve: Curves.fastOutSlowIn,
+          curve: Curves.easeInBack,
           bottom: fabBottomInset,
           right: 0,
           duration: Duration(milliseconds: 400),
@@ -187,32 +185,6 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
     );
   }
 
-  Align buildBottomAppBar() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Opacity(
-        opacity: isUserScrolledDown ? 0 : 1,
-        child: Material(
-          elevation: 8.0,
-          child: Container(
-            color: Colors.white,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(Icons.home_outlined),
-                Icon(Icons.folder_outlined),
-                Icon(Icons.search),
-                Icon(Icons.notifications_outlined),
-                Icon(Icons.menu),
-              ],
-            ),
-            height: 60,
-          ),
-        ),
-      ),
-    );
-  }
-
   void setSliverAppBarToPrimaryWhenPinned() {
     if (_sliverScrollController.hasClients &&
         _sliverScrollController.position.userScrollDirection ==
@@ -237,15 +209,19 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
           case ScrollDirection.forward:
             if (userScroll.metrics.maxScrollExtent !=
                 userScroll.metrics.minScrollExtent) {
-              fabBottomInset = 60;
-              isUserScrolledDown = false;
+              fabBottomInset = 0;
+              context
+                  .read<BottomNavBarCubit>()
+                  .changeOpacity(NavigationBarState.HOME);
             }
             break;
           case ScrollDirection.reverse:
             if (userScroll.metrics.maxScrollExtent !=
                 userScroll.metrics.minScrollExtent) {
               fabBottomInset = -150;
-              isUserScrolledDown = true;
+              context
+                  .read<BottomNavBarCubit>()
+                  .changeOpacity(NavigationBarState.ITEMS_DISABLED);
             }
             break;
           case ScrollDirection.idle:
@@ -254,108 +230,5 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
       }
     }
     return false;
-  }
-}
-
-class ItemCard extends StatefulWidget {
-  final Size size;
-  final int index;
-
-  const ItemCard({Key key, @required this.size, @required this.index})
-      : super(key: key);
-  @override
-  _ItemCardState createState() => _ItemCardState();
-}
-
-class _ItemCardState extends State<ItemCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            buildItemCardImage(),
-            buildItemCardInformation(context),
-            Icon(Icons.more_horiz)
-          ],
-        ),
-      ),
-    );
-  }
-
-  Card buildItemCardImage() {
-    return Card(
-      color: Colors.grey.shade200,
-      elevation: 0,
-      child: Container(
-        width: widget.size.height * .1,
-        height: widget.size.height * .1,
-        child: Icon(
-          widget.index % 3 == 0 ? Icons.folder : Icons.insert_drive_file,
-          color: Colors.grey,
-          size: widget.size.width * .08,
-        ),
-      ),
-    );
-  }
-
-  Expanded buildItemCardInformation(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            widget.index % 3 == 0
-                ? "Klasör ${widget.index + 1}"
-                : "Varlık ${widget.index + 1}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.caption,
-          ),
-          Text(
-            widget.index % 3 == 0
-                ? "Klasör ${widget.index + 1}"
-                : "Varlık ${widget.index + 1}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodyText1,
-          ),
-          SizedBox(
-            width: widget.size.width * .15,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(
-                  Icons.folder_outlined,
-                  size: 10,
-                ),
-                Text(
-                  "${widget.index + 1}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Text(
-                  "|",
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Icon(
-                  Icons.layers_outlined,
-                  size: 10,
-                ),
-                Text(
-                  "${widget.index + 1}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
