@@ -1,4 +1,5 @@
 import 'package:envanter/core/constants/enum.dart';
+import 'package:envanter/core/constants/style.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_cubit.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_state.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ BlocBuilder buildBottomAppBar() {
                   )),
             ],
           ),
-          height: 55,
+          height: StyleConstants.kBottomAppBarHeight,
         ),
       );
     },

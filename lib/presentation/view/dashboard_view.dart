@@ -1,7 +1,13 @@
+import 'package:envanter/core/constants/enum.dart';
+import 'package:envanter/core/constants/style.dart';
+import 'package:envanter/data/models/bottom_sheet_action_model.dart';
 import 'package:envanter/presentation/bloc/dashboard/dashboard_cubit.dart';
 import 'package:envanter/presentation/bloc/dashboard/dashboard_state.dart';
 import 'package:envanter/presentation/widgets/dashboard_card.dart';
+import 'package:envanter/presentation/widgets/icon_with_text.dart';
+import 'package:envanter/presentation/widgets/item_card.dart';
 import 'package:envanter/presentation/widgets/recent_item_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +28,10 @@ class _DashBoardViewState extends State<DashBoardView> {
       listener: (BuildContext context, state) {
         if (state is OpenBottomModelState) {
           showModalBottomSheet(
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
             isDismissible: false,
+            enableDrag: false,
             context: context,
             builder: (BuildContext ctx) {
               return buildBottomModalSheet(ctx);
@@ -56,22 +65,95 @@ class _DashBoardViewState extends State<DashBoardView> {
     );
   }
 
-  Container buildBottomModalSheet(BuildContext ctx) {
-    return Container(
-      height: 200,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text('Modal BottomSheet'),
-            ElevatedButton(
-                child: const Text('Close BottomSheet'),
-                onPressed: () {
-                  context.read<DashboardCubit>().interactBottomModal();
-                  Navigator.pop(ctx);
-                })
-          ],
+  Widget buildBottomModalSheet(BuildContext ctx) {
+    return FractionallySizedBox(
+      heightFactor: 0.6,
+      child: Padding(
+        padding:
+            EdgeInsets.only(bottom: StyleConstants.kBottomAppBarHeight / 5),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                  child: Card(
+                //PLACEHOLDER CARD
+                child: ItemCard(
+                  index: 0,
+                  size: MediaQuery.of(context).size,
+                ),
+              )),
+              Expanded(
+                flex: 2,
+                child: buildBottomSheetActions(
+                    crossAxisLength: 4, actions: bottomSheetActions),
+              ),
+              buildBottomSheetBackButton(ctx)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Card buildBottomSheetActions(
+      {@required int crossAxisLength, @required List<dynamic> actions}) {
+    return Card(
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(
+          (actions.length / crossAxisLength).ceil(),
+          (columnIndex) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(
+              crossAxisLength,
+              (rowIndex) => columnIndex * crossAxisLength + rowIndex >=
+                      actions.length
+                  ? SizedBox(
+                      width: 50,
+                    )
+                  : SizedBox(
+                      width: 50,
+                      child: IconWithText(
+                          text:
+                              actions[columnIndex * crossAxisLength + rowIndex]
+                                  .text,
+                          icon:
+                              actions[columnIndex * crossAxisLength + rowIndex]
+                                  .icon,
+                          bottomSheetState:
+                              actions[columnIndex * crossAxisLength + rowIndex]
+                                  .dashBoardBottomSheetState),
+                    ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding buildBottomSheetBackButton(BuildContext ctx) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: ElevatedButton(
+        onPressed: () {
+          context.read<DashboardCubit>().interactBottomModal();
+          Navigator.pop(ctx);
+        },
+        child: Text(
+          "Geri dön",
+          style: Theme.of(context).textTheme.button,
+        ),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) return Colors.white70;
+              return Colors.white;
+            },
+          ),
         ),
       ),
     );
@@ -248,4 +330,43 @@ class _DashBoardViewState extends State<DashBoardView> {
       ),
     );
   }
+
+  List<BottomSheetActionModel> bottomSheetActions = [
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.EDIT,
+        icon: Icons.edit,
+        text: "Düzenle"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.MOVE,
+        icon: CupertinoIcons.move,
+        text: "Taşı"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.CHANGE_QTY,
+        icon: CupertinoIcons.minus_slash_plus,
+        text: "Miktar"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.SET_ALERT,
+        icon: Icons.add_alert_outlined,
+        text: "Alarm"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.EXPORT,
+        icon: Icons.open_in_new,
+        text: "Aktar"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.CREATE_LABEL,
+        icon: Icons.qr_code,
+        text: "Tara"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.CLONE,
+        icon: Icons.file_copy_outlined,
+        text: "Çoğalt"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.HISTORY,
+        icon: Icons.history,
+        text: "Geçmiş"),
+    BottomSheetActionModel(
+        dashBoardBottomSheetState: DashBoardBottomSheetState.DELETE,
+        icon: Icons.history,
+        text: "Sil"),
+  ];
 }
