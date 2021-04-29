@@ -18,7 +18,7 @@ BlocBuilder buildBottomAppBar() {
                   onTap: () {
                     context
                         .read<BottomNavBarCubit>()
-                        .getView(NavigationBarState.HOME);
+                        .setCurrentViewOfIndexedStack(NavigationBarState.HOME);
                   },
                   child: Icon(
                     Icons.home_outlined,
@@ -28,7 +28,7 @@ BlocBuilder buildBottomAppBar() {
                   onTap: () {
                     context
                         .read<BottomNavBarCubit>()
-                        .getView(NavigationBarState.ITEMS);
+                        .setCurrentViewOfIndexedStack(NavigationBarState.ITEMS);
                   },
                   child: Icon(
                     Icons.folder_outlined,
@@ -36,7 +36,9 @@ BlocBuilder buildBottomAppBar() {
                   )),
               GestureDetector(
                   onTap: () {
-                    context.read<BottomNavBarCubit>().getView(
+                    context
+                        .read<BottomNavBarCubit>()
+                        .setCurrentViewOfIndexedStack(
                           NavigationBarState.SEARCH,
                         );
                   },
@@ -48,7 +50,7 @@ BlocBuilder buildBottomAppBar() {
                   onTap: () {
                     context
                         .read<BottomNavBarCubit>()
-                        .getView(NavigationBarState.ALARM);
+                        .setCurrentViewOfIndexedStack(NavigationBarState.ALARM);
                   },
                   child: Icon(
                     Icons.notifications_outlined,
@@ -58,7 +60,7 @@ BlocBuilder buildBottomAppBar() {
                   onTap: () {
                     context
                         .read<BottomNavBarCubit>()
-                        .getView(NavigationBarState.MENU);
+                        .setCurrentViewOfIndexedStack(NavigationBarState.MENU);
                   },
                   child: Icon(
                     Icons.menu,

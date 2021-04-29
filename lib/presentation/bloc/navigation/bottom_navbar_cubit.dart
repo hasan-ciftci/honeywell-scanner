@@ -8,7 +8,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
   BottomNavBarCubit({@required this.repository}) : super(HomeViewState());
   final BottomNavBarRepository repository;
 
-  getView(NavigationBarState navigationBarState) {
+  setCurrentViewOfIndexedStack(NavigationBarState navigationBarState) {
     switch (navigationBarState) {
       case NavigationBarState.HOME:
         emit(HomeViewState());
@@ -30,7 +30,22 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
     }
   }
 
-  changeOpacity(NavigationBarState navigationBarState) {
+  getIndexOfIndexedStack() {
+    if (state is HomeViewState)
+      return 0;
+    else if (state is ItemsViewState)
+      return 1;
+    else if (state is SearchViewState)
+      return 2;
+    else if (state is AlarmViewState)
+      return 3;
+    else if (state is MenuViewState)
+      return 4;
+    else
+      return 0;
+  }
+
+  changeOpacityOfBottomNavBar(NavigationBarState navigationBarState) {
     switch (navigationBarState) {
       case NavigationBarState.ITEMS_DISABLED:
         emit(ItemsViewState(opacity: 0));

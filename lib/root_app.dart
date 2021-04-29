@@ -22,19 +22,9 @@ class _RootAppState extends State<RootApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
       builder: (BuildContext context, state) {
-        int indexedStackIndex = 0;
-        if (state is HomeViewState)
-          indexedStackIndex = 0;
-        else if (state is ItemsViewState)
-          indexedStackIndex = 1;
-        else if (state is SearchViewState)
-          indexedStackIndex = 2;
-        else if (state is AlarmViewState)
-          indexedStackIndex = 3;
-        else if (state is MenuViewState) indexedStackIndex = 4;
         return Scaffold(
           body: IndexedStack(
-            index: indexedStackIndex,
+            index: context.read<BottomNavBarCubit>().getIndexOfIndexedStack(),
             children: [
               BlocProvider<DashboardCubit>(
                 create: (_) => DashboardCubit(DashboardRepository()),

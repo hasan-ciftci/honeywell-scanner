@@ -212,16 +212,15 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
               fabBottomInset = 0;
               context
                   .read<BottomNavBarCubit>()
-                  .changeOpacity(NavigationBarState.HOME);
+                  .changeOpacityOfBottomNavBar(NavigationBarState.HOME);
             }
             break;
           case ScrollDirection.reverse:
             if (userScroll.metrics.maxScrollExtent !=
                 userScroll.metrics.minScrollExtent) {
               fabBottomInset = -150;
-              context
-                  .read<BottomNavBarCubit>()
-                  .changeOpacity(NavigationBarState.ITEMS_DISABLED);
+              context.read<BottomNavBarCubit>().changeOpacityOfBottomNavBar(
+                  NavigationBarState.ITEMS_DISABLED);
             }
             break;
           case ScrollDirection.idle:
