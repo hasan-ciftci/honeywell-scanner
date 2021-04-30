@@ -50,11 +50,119 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
           child: FloatingActionButton(
             backgroundColor: Colors.red,
             elevation: 8,
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return buildAddItemBottomSheet();
+                  }).whenComplete(() => print("closed"));
+            },
             child: Icon(Icons.add),
           ),
         ),
       ],
+    );
+  }
+
+  Stack buildAddItemBottomSheet() {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        FractionallySizedBox(
+          alignment: Alignment.bottomCenter,
+          heightFactor: 0.5,
+          child: Container(
+            padding: EdgeInsets.all(16.0),
+            color: Color(0xFFb62132),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildBottomSheetFolderRootText(root: 'Varlıklar'),
+                buildBottomSheetButton(
+                    buttonText: 'Varlık Ekle',
+                    buttonIcon: Icons.insert_drive_file_outlined),
+                buildBottomSheetButton(
+                    buttonText: 'Klasör Ekle',
+                    buttonIcon: Icons.folder_open_outlined),
+              ],
+            ),
+          ),
+        ),
+        buildCloseBottomSheetButton(context),
+      ],
+    );
+  }
+
+  Positioned buildCloseBottomSheetButton(BuildContext context) {
+    return Positioned(
+        bottom: MediaQuery.of(context).size.height * .25,
+        right: 15,
+        child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            child: Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }));
+  }
+
+  Expanded buildBottomSheetFolderRootText({@required String root}) {
+    return Expanded(
+        child: Padding(
+            //For aligning text with cards
+            padding: EdgeInsets.only(left: 4.0),
+            child: RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                    text: "Eklenecek dizin: ",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(color: Colors.white)),
+                TextSpan(
+                    text: root,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.white)),
+              ]),
+            )));
+  }
+
+  Expanded buildBottomSheetButton(
+      {@required String buttonText, @required IconData buttonIcon}) {
+    return Expanded(
+      flex: 2,
+      child: Card(
+        color: Color(0xFFe22236),
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return Icon(
+                    buttonIcon,
+                    color: Colors.white,
+                    size: constraints.maxHeight * .8,
+                  );
+                },
+              ),
+              SizedBox(
+                width: 16,
+              ),
+              Text(buttonText,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1
+                      .copyWith(color: Colors.white))
+            ],
+          ),
+        ),
+      ),
     );
   }
 
