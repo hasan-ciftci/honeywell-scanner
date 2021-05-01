@@ -26,17 +26,16 @@ class _DashBoardViewState extends State<DashBoardView> {
     Size size = MediaQuery.of(context).size;
     return BlocListener<DashboardCubit, DashboardState>(
       listener: (BuildContext context, state) {
-        if (state is OpenBottomModelState) {
+        if (state is OpenBottomSheetState) {
           showModalBottomSheet(
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
-            isDismissible: false,
-            enableDrag: false,
             context: context,
             builder: (BuildContext ctx) {
               return buildBottomModalSheet(ctx);
             },
-          );
+          ).whenComplete(
+              () => context.read<DashboardCubit>().closeBottomSheet());
         }
       },
       child: Scaffold(
@@ -140,7 +139,7 @@ class _DashBoardViewState extends State<DashBoardView> {
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: ElevatedButton(
         onPressed: () {
-          context.read<DashboardCubit>().interactBottomModal();
+          context.read<DashboardCubit>().closeBottomSheet();
           Navigator.pop(ctx);
         },
         child: Text(
@@ -306,7 +305,7 @@ class _DashBoardViewState extends State<DashBoardView> {
                 padding: EdgeInsets.symmetric(horizontal: 4.0),
                 child: GestureDetector(
                   onTap: () {
-                    context.read<DashboardCubit>().interactBottomModal();
+                    context.read<DashboardCubit>().openBottomSheet();
                   },
                   child: RecentItemCard(
                     itemId: 'SWVT49RE033',

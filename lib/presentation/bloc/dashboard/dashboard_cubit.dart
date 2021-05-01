@@ -5,11 +5,13 @@ import 'package:envanter/presentation/bloc/dashboard/dashboard_state.dart';
 class DashboardCubit extends Cubit<DashboardState> {
   final DashboardRepository repository;
 
-  DashboardCubit(this.repository) : super(CloseBottomModelState());
+  DashboardCubit(this.repository) : super(InitialState());
 
-  interactBottomModal() {
-    state is CloseBottomModelState
-        ? emit(OpenBottomModelState())
-        : emit(CloseBottomModelState());
+  openBottomSheet() {
+    emit(OpenBottomSheetState());
+  }
+
+  closeBottomSheet() {
+    emit(CloseBottomSheetState());
   }
 }

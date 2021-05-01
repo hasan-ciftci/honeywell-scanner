@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:envanter/core/constants/enum.dart';
+import 'package:envanter/presentation/bloc/items/items_cubit.dart';
+import 'package:envanter/presentation/bloc/items/items_state.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_cubit.dart';
 import 'package:envanter/presentation/widgets/item_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,9 +33,23 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size;
     return NotificationListener<ScrollNotification>(
       onNotification: _handleScrollNotification,
-      child: Scaffold(
-        floatingActionButton: buildAnimatedFAB(),
-        body: buildBody(context, size),
+      child: BlocListener<ItemsCubit, ItemsState>(
+        listener: (BuildContext context, state) {
+          if (state is OpenBottomSheetState) {
+            showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return buildAddItemBottomSheet();
+                    })
+                .whenComplete(
+                    () => context.read<ItemsCubit>().closeBottomSheet());
+          }
+        },
+        child: Scaffold(
+          floatingActionButton: buildAnimatedFAB(),
+          body: buildBody(context, size),
+        ),
       ),
     );
   }
@@ -51,12 +67,7 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
             backgroundColor: Colors.red,
             elevation: 8,
             onPressed: () {
-              showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return buildAddItemBottomSheet();
-                  }).whenComplete(() => print("closed"));
+              context.read<ItemsCubit>().openBottomSheet();
             },
             child: Icon(Icons.add),
           ),
@@ -105,6 +116,7 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
               color: Colors.red,
             ),
             onPressed: () {
+              context.read<ItemsCubit>().closeBottomSheet();
               Navigator.of(context).pop();
             }));
   }

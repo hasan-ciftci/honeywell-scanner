@@ -4,12 +4,17 @@ abstract class DashboardState extends Equatable {
   DashboardState();
 }
 
-class OpenBottomModelState extends DashboardState {
+class InitialState extends DashboardState {
   @override
   List<Object> get props => [];
 }
 
-class CloseBottomModelState extends DashboardState {
+class OpenBottomSheetState extends DashboardState {
+  @override
+  List<Object> get props => [];
+}
+
+class CloseBottomSheetState extends DashboardState {
   @override
   List<Object> get props => [];
 }

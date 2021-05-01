@@ -1,4 +1,6 @@
+import 'package:envanter/data/repositories/items_repository.dart';
 import 'package:envanter/presentation/bloc/dashboard/dashboard_cubit.dart';
+import 'package:envanter/presentation/bloc/items/items_cubit.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_cubit.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_state.dart';
 import 'package:envanter/presentation/view/alarm_view.dart';
@@ -30,7 +32,10 @@ class _RootAppState extends State<RootApp> {
                 create: (_) => DashboardCubit(DashboardRepository()),
                 child: DashBoardView(),
               ),
-              ItemsView(),
+              BlocProvider<ItemsCubit>(
+                create: (_) => ItemsCubit(ItemsRepository()),
+                child: ItemsView(),
+              ),
               SearchView(),
               AlarmView(),
               MenuView(),
