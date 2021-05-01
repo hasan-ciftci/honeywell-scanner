@@ -1,9 +1,14 @@
 import 'dart:ui';
 
 import 'package:envanter/core/constants/enum.dart';
+import 'package:envanter/data/repositories/add_folder_repository.dart';
+import 'package:envanter/data/repositories/add_item_repository.dart';
+import 'package:envanter/data/repositories/items_repository.dart';
 import 'package:envanter/presentation/bloc/items/items_cubit.dart';
 import 'package:envanter/presentation/bloc/items/items_state.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_cubit.dart';
+import 'package:envanter/presentation/view/add_folder_view.dart';
+import 'package:envanter/presentation/view/add_item_view.dart';
 import 'package:envanter/presentation/widgets/item_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +49,28 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
                     })
                 .whenComplete(
                     () => context.read<ItemsCubit>().closeBottomSheet());
+          } else if (state is OpenAddItemState) {
+            Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return RepositoryProvider.value(
+                value: RepositoryProvider.of<ItemsRepository>(context),
+                child: RepositoryProvider(
+                  create: (BuildContext context) => AddItemRepository(),
+                  child: AddItemView(),
+                ),
+              );
+            })).whenComplete(
+                () => context.read<ItemsCubit>().closeAddItemPage());
+          } else if (state is OpenAddFolderState) {
+            Navigator.push(context, MaterialPageRoute(builder: (_) {
+              return RepositoryProvider.value(
+                value: RepositoryProvider.of<ItemsRepository>(context),
+                child: RepositoryProvider(
+                  create: (BuildContext context) => AddFolderRepository(),
+                  child: AddFolderView(),
+                ),
+              );
+            })).whenComplete(
+                () => context.read<ItemsCubit>().closeAddFolderPage());
           }
         },
         child: Scaffold(
@@ -92,10 +119,22 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
                 buildBottomSheetFolderRootText(root: 'Varlıklar'),
                 buildBottomSheetButton(
                     buttonText: 'Varlık Ekle',
-                    buttonIcon: Icons.insert_drive_file_outlined),
+                    buttonIcon: Icons.insert_drive_file_outlined,
+                    onPressed: () {
+                      context.read<ItemsCubit>().openAddItemPage(
+                          currentDirectory: context
+                              .read<ItemsRepository>()
+                              .getCurrentDirectory());
+                    }),
                 buildBottomSheetButton(
                     buttonText: 'Klasör Ekle',
-                    buttonIcon: Icons.folder_open_outlined),
+                    buttonIcon: Icons.folder_open_outlined,
+                    onPressed: () {
+                      context.read<ItemsCubit>().openAddFolderPage(
+                          currentDirectory: context
+                              .read<ItemsRepository>()
+                              .getCurrentDirectory());
+                    }),
               ],
             ),
           ),
@@ -145,33 +184,38 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
   }
 
   Expanded buildBottomSheetButton(
-      {@required String buttonText, @required IconData buttonIcon}) {
+      {@required String buttonText,
+      @required IconData buttonIcon,
+      @required Function onPressed}) {
     return Expanded(
       flex: 2,
-      child: Card(
-        color: Color(0xFFe22236),
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return Icon(
-                    buttonIcon,
-                    color: Colors.white,
-                    size: constraints.maxHeight * .8,
-                  );
-                },
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              Text(buttonText,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      .copyWith(color: Colors.white))
-            ],
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Card(
+          color: Color(0xFFe22236),
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    return Icon(
+                      buttonIcon,
+                      color: Colors.white,
+                      size: constraints.maxHeight * .8,
+                    );
+                  },
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                Text(buttonText,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.white))
+              ],
+            ),
           ),
         ),
       ),
