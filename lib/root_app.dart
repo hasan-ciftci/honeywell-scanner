@@ -32,9 +32,12 @@ class _RootAppState extends State<RootApp> {
                 create: (_) => DashboardCubit(DashboardRepository()),
                 child: DashBoardView(),
               ),
-              BlocProvider<ItemsCubit>(
-                create: (_) => ItemsCubit(ItemsRepository()),
-                child: ItemsView(),
+              RepositoryProvider(
+                create: (BuildContext context) => ItemsRepository(),
+                child: BlocProvider<ItemsCubit>(
+                  create: (_) => ItemsCubit(ItemsRepository()),
+                  child: ItemsView(),
+                ),
               ),
               SearchView(),
               AlarmView(),
