@@ -13,9 +13,22 @@ class _AddItemViewState extends State<AddItemView> {
     context.read<ItemsRepository>().getCurrentDirectory();
 
     return Scaffold(
-      body: Center(
-        child: Text("Add item"),
-      ),
-    );
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: SingleChildScrollView(
+          physics:
+              BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        ));
   }
 }

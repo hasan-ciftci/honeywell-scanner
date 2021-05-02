@@ -50,25 +50,31 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
                 .whenComplete(
                     () => context.read<ItemsCubit>().closeBottomSheet());
           } else if (state is OpenAddItemState) {
+            Navigator.of(context).pop();
             Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return RepositoryProvider.value(
-                value: RepositoryProvider.of<ItemsRepository>(context),
-                child: RepositoryProvider(
-                  create: (BuildContext context) => AddItemRepository(),
-                  child: AddItemView(),
-                ),
+              return MultiRepositoryProvider(
+                providers: [
+                  RepositoryProvider.value(
+                      value: RepositoryProvider.of<ItemsRepository>(context)),
+                  RepositoryProvider(
+                    create: (BuildContext context) => AddItemRepository(),
+                  ),
+                ],
+                child: AddItemView(),
               );
             })).whenComplete(
                 () => context.read<ItemsCubit>().closeAddItemPage());
           } else if (state is OpenAddFolderState) {
+            Navigator.of(context).pop();
             Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return RepositoryProvider.value(
-                value: RepositoryProvider.of<ItemsRepository>(context),
-                child: RepositoryProvider(
-                  create: (BuildContext context) => AddFolderRepository(),
-                  child: AddFolderView(),
+              return MultiRepositoryProvider(providers: [
+                RepositoryProvider.value(
+                  value: RepositoryProvider.of<ItemsRepository>(context),
                 ),
-              );
+                RepositoryProvider(
+                  create: (BuildContext context) => AddFolderRepository(),
+                ),
+              ], child: AddFolderView());
             })).whenComplete(
                 () => context.read<ItemsCubit>().closeAddFolderPage());
           }
