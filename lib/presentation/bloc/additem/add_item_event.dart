@@ -1,45 +1,45 @@
 abstract class AddItemEvent {}
 
-class ItemNameChanged extends AddItemEvent {
+class ItemNameChangedEvent extends AddItemEvent {
   final String itemName;
 
-  ItemNameChanged({this.itemName});
+  ItemNameChangedEvent({this.itemName});
 }
 
-class ItemMinimumLevelChanged extends AddItemEvent {
+class ItemMinimumLevelChangedEvent extends AddItemEvent {
   final String itemMinimumLevel;
 
-  ItemMinimumLevelChanged({this.itemMinimumLevel});
+  ItemMinimumLevelChangedEvent({this.itemMinimumLevel});
 }
 
-class ItemPriceChanged extends AddItemEvent {
-  final String itemPriceChanged;
+class ItemPriceChangedEvent extends AddItemEvent {
+  final String itemPriceChangedEvent;
 
-  ItemPriceChanged({this.itemPriceChanged});
+  ItemPriceChangedEvent({this.itemPriceChangedEvent});
 }
 
-class ItemTotalValueChanged extends AddItemEvent {
+class ItemTotalValueChangedEvent extends AddItemEvent {
   final String itemTotalValue;
 
-  ItemTotalValueChanged({this.itemTotalValue});
+  ItemTotalValueChangedEvent({this.itemTotalValue});
 }
 
-class ItemTagsChanged extends AddItemEvent {
+class ItemTagsChangedEvent extends AddItemEvent {
   final String itemTags;
 
-  ItemTagsChanged({this.itemTags});
+  ItemTagsChangedEvent({this.itemTags});
 }
 
-class ItemNotesChanged extends AddItemEvent {
+class ItemNotesChangedEvent extends AddItemEvent {
   final String itemNotes;
 
-  ItemNotesChanged({this.itemNotes});
+  ItemNotesChangedEvent({this.itemNotes});
 }
 
-class ItemBarcodeChanged extends AddItemEvent {
+class ItemBarcodeChangedEvent extends AddItemEvent {
   final String itemBarcode;
 
-  ItemBarcodeChanged({this.itemBarcode});
+  ItemBarcodeChangedEvent({this.itemBarcode});
 }
 
 class NewItemSubmitted extends AddItemEvent {}

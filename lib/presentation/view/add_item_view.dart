@@ -1,4 +1,7 @@
 import 'package:envanter/data/repositories/items_repository.dart';
+import 'package:envanter/presentation/bloc/additem/add_item_bloc.dart';
+import 'package:envanter/presentation/bloc/additem/add_item_event.dart';
+import 'package:envanter/presentation/bloc/additem/add_item_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,9 +72,14 @@ class _AddItemViewState extends State<AddItemView> {
         decoration: InputDecoration(
           isCollapsed: true,
           hintStyle: TextStyle(fontSize: 25),
-          hintText: "Klasör İsmi Giriniz",
+          hintText: "Varlık İsmi Giriniz",
           border: InputBorder.none,
         ),
+        onChanged: (value) {
+          context
+              .read<AddItemBloc>()
+              .add(ItemNameChangedEvent(itemName: value));
+        },
       ),
     );
   }
@@ -333,18 +341,46 @@ class _AddItemViewState extends State<AddItemView> {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
+              GestureDetector(
+                child: Icon(Icons.close),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              buildSaveButton()
             ],
           ),
         ),
       ),
+    );
+  }
+
+  BlocBuilder buildSaveButton() {
+    return BlocBuilder<AddItemBloc, AddItemState>(
+      builder: (BuildContext context, state) {
+        return Opacity(
+          opacity: state.isValidItemName ? 1 : 0,
+          child: Container(
+            padding: EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+              color: Color(0xFFe22236),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              "Kaydet",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.white),
+            ),
+          ),
+        );
+      },
     );
   }
 }

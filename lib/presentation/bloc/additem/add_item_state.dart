@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class AddItemState extends Equatable {
   final String itemName;
+  bool get isValidItemName => itemName != null && itemName.length > 0;
 
   final String itemQuantity;
   final String itemMinimumLevel;

@@ -5,6 +5,7 @@ import 'package:envanter/data/repositories/add_folder_repository.dart';
 import 'package:envanter/data/repositories/add_item_repository.dart';
 import 'package:envanter/data/repositories/items_repository.dart';
 import 'package:envanter/presentation/bloc/addfolder/add_folder_bloc.dart';
+import 'package:envanter/presentation/bloc/additem/add_item_bloc.dart';
 import 'package:envanter/presentation/bloc/items/items_cubit.dart';
 import 'package:envanter/presentation/bloc/items/items_state.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_cubit.dart';
@@ -61,7 +62,10 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
                     create: (BuildContext context) => AddItemRepository(),
                   ),
                 ],
-                child: AddItemView(),
+                child: BlocProvider<AddItemBloc>(
+                  create: (BuildContext context) => AddItemBloc(),
+                  child: AddItemView(),
+                ),
               );
             })).whenComplete(
                 () => context.read<ItemsCubit>().closeAddItemPage());
