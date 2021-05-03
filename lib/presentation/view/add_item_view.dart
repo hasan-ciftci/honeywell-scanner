@@ -36,15 +36,19 @@ class _AddItemViewState extends State<AddItemView> {
                         SizedBox(
                           width: 4,
                         ),
-                        Text("Varlıklar")
+                        Text("Varlık")
                       ],
                     ),
-                    TextField(
-                      style: TextStyle(fontSize: 25),
-                      decoration: InputDecoration.collapsed(
-                        hintStyle: TextStyle(fontSize: 25),
-                        hintText: "Varlık İsmi Giriniz",
-                        border: InputBorder.none,
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      child: TextField(
+                        style: TextStyle(fontSize: 25),
+                        decoration: InputDecoration(
+                          isCollapsed: true,
+                          hintStyle: TextStyle(fontSize: 25),
+                          hintText: "Klasör İsmi Giriniz",
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
                     Table(
