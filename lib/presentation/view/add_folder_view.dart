@@ -1,4 +1,7 @@
 import 'package:envanter/data/repositories/items_repository.dart';
+import 'package:envanter/presentation/bloc/addfolder/add_folder_bloc.dart';
+import 'package:envanter/presentation/bloc/addfolder/add_folder_event.dart';
+import 'package:envanter/presentation/bloc/addfolder/add_folder_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +69,11 @@ class _AddFolderViewState extends State<AddFolderView> {
           hintText: "Klasör İsmi Giriniz",
           border: InputBorder.none,
         ),
-        onChanged: (value) {},
+        onChanged: (value) {
+          context
+              .read<AddFolderBloc>()
+              .add(FolderNameChangedEvent(folderName: value));
+        },
       ),
     );
   }
@@ -179,18 +186,46 @@ class _AddFolderViewState extends State<AddFolderView> {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
+              GestureDetector(
+                child: Icon(Icons.close),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              buildSaveButton()
             ],
           ),
         ),
       ),
+    );
+  }
+
+  BlocBuilder buildSaveButton() {
+    return BlocBuilder<AddFolderBloc, AddFolderState>(
+      builder: (BuildContext context, state) {
+        return Opacity(
+          opacity: state.isValidUserName ? 1 : 0,
+          child: Container(
+            padding: EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+              color: Color(0xFFe22236),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              "Kaydet",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.white),
+            ),
+          ),
+        );
+      },
     );
   }
 }

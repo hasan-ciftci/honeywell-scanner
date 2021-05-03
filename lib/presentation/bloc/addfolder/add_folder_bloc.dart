@@ -11,13 +11,13 @@ class AddFolderBloc extends Bloc<AddFolderEvent, AddFolderState> {
 
   @override
   Stream<AddFolderState> mapEventToState(AddFolderEvent event) async* {
-    if (event is FolderNameChanged) {
+    if (event is FolderNameChangedEvent) {
       yield state.copyWith(folderName: event.folderName);
-    } else if (event is FolderTagsChanged) {
+    } else if (event is FolderTagsChangedEvent) {
       yield state.copyWith(folderTags: event.folderTags);
-    } else if (event is FolderNotesChanged) {
+    } else if (event is FolderNotesChangedEvent) {
       yield state.copyWith(folderNotes: event.folderNotes);
-    } else if (event is FolderBarcodeChanged) {
+    } else if (event is FolderBarcodeChangedEvent) {
       yield state.copyWith(folderBarcode: event.folderBarcode);
     } else if (event is NewFolderSubmitted) {}
   }

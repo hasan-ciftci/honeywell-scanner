@@ -4,6 +4,7 @@ import 'package:envanter/core/constants/enum.dart';
 import 'package:envanter/data/repositories/add_folder_repository.dart';
 import 'package:envanter/data/repositories/add_item_repository.dart';
 import 'package:envanter/data/repositories/items_repository.dart';
+import 'package:envanter/presentation/bloc/addfolder/add_folder_bloc.dart';
 import 'package:envanter/presentation/bloc/items/items_cubit.dart';
 import 'package:envanter/presentation/bloc/items/items_state.dart';
 import 'package:envanter/presentation/bloc/navigation/bottom_navbar_cubit.dart';
@@ -67,14 +68,18 @@ class _ItemsViewState extends State<ItemsView> with TickerProviderStateMixin {
           } else if (state is OpenAddFolderState) {
             Navigator.of(context).pop();
             Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return MultiRepositoryProvider(providers: [
-                RepositoryProvider.value(
-                  value: RepositoryProvider.of<ItemsRepository>(context),
-                ),
-                RepositoryProvider(
-                  create: (BuildContext context) => AddFolderRepository(),
-                ),
-              ], child: AddFolderView());
+              return MultiRepositoryProvider(
+                  providers: [
+                    RepositoryProvider.value(
+                      value: RepositoryProvider.of<ItemsRepository>(context),
+                    ),
+                    RepositoryProvider(
+                      create: (BuildContext context) => AddFolderRepository(),
+                    ),
+                  ],
+                  child: BlocProvider<AddFolderBloc>(
+                      create: (BuildContext context) => AddFolderBloc(),
+                      child: AddFolderView()));
             })).whenComplete(
                 () => context.read<ItemsCubit>().closeAddFolderPage());
           }

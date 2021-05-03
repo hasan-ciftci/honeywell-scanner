@@ -1,27 +1,27 @@
 abstract class AddFolderEvent {}
 
-class FolderNameChanged extends AddFolderEvent {
+class FolderNameChangedEvent extends AddFolderEvent {
   final String folderName;
 
-  FolderNameChanged({this.folderName});
+  FolderNameChangedEvent({this.folderName});
 }
 
-class FolderTagsChanged extends AddFolderEvent {
+class FolderTagsChangedEvent extends AddFolderEvent {
   final String folderTags;
 
-  FolderTagsChanged({this.folderTags});
+  FolderTagsChangedEvent({this.folderTags});
 }
 
-class FolderNotesChanged extends AddFolderEvent {
+class FolderNotesChangedEvent extends AddFolderEvent {
   final String folderNotes;
 
-  FolderNotesChanged({this.folderNotes});
+  FolderNotesChangedEvent({this.folderNotes});
 }
 
-class FolderBarcodeChanged extends AddFolderEvent {
+class FolderBarcodeChangedEvent extends AddFolderEvent {
   final String folderBarcode;
 
-  FolderBarcodeChanged({this.folderBarcode});
+  FolderBarcodeChangedEvent({this.folderBarcode});
 }
 
 class NewFolderSubmitted extends AddFolderEvent {}
