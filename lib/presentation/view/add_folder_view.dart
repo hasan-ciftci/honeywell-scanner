@@ -26,105 +26,10 @@ class _AddFolderViewState extends State<AddFolderView> {
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.folder_outlined,
-                          size: 15,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text("Klasör")
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: TextField(
-                        style: TextStyle(fontSize: 25),
-                        decoration: InputDecoration(
-                          isCollapsed: true,
-                          hintStyle: TextStyle(fontSize: 25),
-                          hintText: "Klasör İsmi Giriniz",
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {},
-                      ),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Table(
-                      border: TableBorder.all(color: Colors.grey, width: 0.5),
-                      children: [
-                        TableRow(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              height: size.height * .06,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Etiketler",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Icon(Icons.arrow_right)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                        TableRow(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              height: size.height * .06,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Notlar",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Icon(Icons.arrow_right)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                        TableRow(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              height: size.height * .06,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "QR / Barkod",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Icon(CupertinoIcons.barcode_viewfinder)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                      ],
-                    ),
+                    buildFormTopic(),
+                    buildFolderNameTextField(),
+                    SizedBox(height: 4),
+                    buildFolderFieldsForm(size, context),
                   ],
                 ),
               ),
@@ -132,6 +37,108 @@ class _AddFolderViewState extends State<AddFolderView> {
           ],
         ),
       ),
+    );
+  }
+
+  Row buildFormTopic() {
+    return Row(
+      children: [
+        Icon(
+          Icons.folder_outlined,
+          size: 15,
+        ),
+        SizedBox(
+          width: 4,
+        ),
+        Text("Klasör")
+      ],
+    );
+  }
+
+  Padding buildFolderNameTextField() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.0),
+      child: TextField(
+        style: TextStyle(fontSize: 25),
+        decoration: InputDecoration(
+          isCollapsed: true,
+          hintStyle: TextStyle(fontSize: 25),
+          hintText: "Klasör İsmi Giriniz",
+          border: InputBorder.none,
+        ),
+        onChanged: (value) {},
+      ),
+    );
+  }
+
+  Table buildFolderFieldsForm(Size size, BuildContext context) {
+    return Table(
+      border: TableBorder.all(color: Colors.grey, width: 0.5),
+      children: [
+        TableRow(children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              height: size.height * .06,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Etiketler",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Icon(Icons.arrow_right)
+                ],
+              ),
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              height: size.height * .06,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Notlar",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Icon(Icons.arrow_right)
+                ],
+              ),
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              height: size.height * .06,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "QR / Barkod",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Icon(CupertinoIcons.barcode_viewfinder)
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ],
     );
   }
 
