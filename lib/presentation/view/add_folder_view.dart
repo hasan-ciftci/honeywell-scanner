@@ -48,6 +48,7 @@ class _AddFolderViewState extends State<AddFolderView> {
                           hintText: "Klasör İsmi Giriniz",
                           border: InputBorder.none,
                         ),
+                        onChanged: (value) {},
                       ),
                     ),
                     SizedBox(
