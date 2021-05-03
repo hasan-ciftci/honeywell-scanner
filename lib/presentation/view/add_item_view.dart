@@ -21,267 +21,278 @@ class _AddItemViewState extends State<AddItemView> {
           children: [
             buildAppBar(size),
             buildAddPhotoButton(size),
-            SizedBox(
-              height: size.height * .55,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.insert_drive_file_outlined,
-                          size: 15,
+            buildItemFieldsForm(size),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox buildItemFieldsForm(Size size) {
+    return SizedBox(
+      height: size.height * .55,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            buildFormTopic(),
+            buildItemNameTextField(),
+            buildMainFieldsForm(size, context),
+            SizedBox(height: 4),
+            buildExtraFieldsForm(size, context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row buildFormTopic() {
+    return Row(
+      children: [
+        Icon(
+          Icons.insert_drive_file_outlined,
+          size: 15,
+        ),
+        SizedBox(
+          width: 4,
+        ),
+        Text("Varlık")
+      ],
+    );
+  }
+
+  Padding buildItemNameTextField() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.0),
+      child: TextField(
+        style: TextStyle(fontSize: 25),
+        decoration: InputDecoration(
+          isCollapsed: true,
+          hintStyle: TextStyle(fontSize: 25),
+          hintText: "Klasör İsmi Giriniz",
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Table buildMainFieldsForm(Size size, BuildContext context) {
+    return Table(
+      border: TableBorder.all(color: Colors.grey, width: 0.5),
+      children: [
+        TableRow(children: [
+          SizedBox(
+            height: size.height * .1,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Miktar",
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: SizedBox(
+                          height: 16,
+                          child: TextFormField(
+                            initialValue: "1",
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              isCollapsed: true,
+                              border: InputBorder.none,
+                            ),
+                          ),
                         ),
-                        SizedBox(
-                          width: 4,
+                      ),
+                      Icon(CupertinoIcons.minus_slash_plus)
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: size.height * .1,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Minimum Seviye",
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: SizedBox(
+                          height: 16,
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: "-",
+                              isCollapsed: true,
+                              border: InputBorder.none,
+                            ),
+                          ),
                         ),
-                        Text("Varlık")
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
-                      child: TextField(
-                        style: TextStyle(fontSize: 25),
+                      ),
+                      Icon(CupertinoIcons.bell)
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          SizedBox(
+            height: size.height * .1,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Fiyat",
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Flexible(
+                    child: SizedBox(
+                      height: 16,
+                      child: TextFormField(
                         decoration: InputDecoration(
+                          hintText: "-",
                           isCollapsed: true,
-                          hintStyle: TextStyle(fontSize: 25),
-                          hintText: "Klasör İsmi Giriniz",
                           border: InputBorder.none,
                         ),
                       ),
                     ),
-                    Table(
-                      border: TableBorder.all(color: Colors.grey, width: 0.5),
-                      children: [
-                        TableRow(children: [
-                          SizedBox(
-                            height: size.height * .1,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Miktar",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: SizedBox(
-                                          height: 16,
-                                          child: TextFormField(
-                                            initialValue: "1",
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              isCollapsed: true,
-                                              border: InputBorder.none,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Icon(CupertinoIcons.minus_slash_plus)
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: size.height * .1,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Minimum Seviye",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Flexible(
-                                        child: SizedBox(
-                                          height: 16,
-                                          child: TextFormField(
-                                            decoration: InputDecoration(
-                                              hintText: "-",
-                                              isCollapsed: true,
-                                              border: InputBorder.none,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Icon(CupertinoIcons.bell)
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                        TableRow(children: [
-                          SizedBox(
-                            height: size.height * .1,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    "Fiyat",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Flexible(
-                                    child: SizedBox(
-                                      height: 16,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          hintText: "-",
-                                          isCollapsed: true,
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: size.height * .1,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    "Toplam Değer",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Flexible(
-                                    child: SizedBox(
-                                      height: 16,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          hintText: "-",
-                                          isCollapsed: true,
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Table(
-                      border: TableBorder.all(color: Colors.grey, width: 0.5),
-                      children: [
-                        TableRow(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              height: size.height * .06,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Etiketler",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Icon(Icons.arrow_right)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                        TableRow(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              height: size.height * .06,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Notlar",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Icon(Icons.arrow_right)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                        TableRow(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              height: size.height * .06,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "QR / Barkod",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                  Icon(CupertinoIcons.barcode_viewfinder)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+          SizedBox(
+            height: size.height * .1,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Toplam Değer",
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Flexible(
+                    child: SizedBox(
+                      height: 16,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "-",
+                          isCollapsed: true,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ],
+    );
+  }
+
+  Table buildExtraFieldsForm(Size size, BuildContext context) {
+    return Table(
+      border: TableBorder.all(color: Colors.grey, width: 0.5),
+      children: [
+        TableRow(children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              height: size.height * .06,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Etiketler",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Icon(Icons.arrow_right)
+                ],
+              ),
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              height: size.height * .06,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Notlar",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Icon(Icons.arrow_right)
+                ],
+              ),
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              height: size.height * .06,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "QR / Barkod",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(color: Colors.grey),
+                  ),
+                  Icon(CupertinoIcons.barcode_viewfinder)
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ],
     );
   }
 
