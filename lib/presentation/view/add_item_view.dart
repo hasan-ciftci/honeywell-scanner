@@ -117,6 +117,11 @@ class _AddItemViewState extends State<AddItemView> {
                               isCollapsed: true,
                               border: InputBorder.none,
                             ),
+                            onChanged: (value) {
+                              context.read<AddItemBloc>().add(
+                                  ItemQuantityChangedEvent(
+                                      itemQuantity: value));
+                            },
                           ),
                         ),
                       ),
@@ -149,6 +154,7 @@ class _AddItemViewState extends State<AddItemView> {
                         child: SizedBox(
                           height: 16,
                           child: TextFormField(
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               hintText: "-",
                               isCollapsed: true,
@@ -185,11 +191,17 @@ class _AddItemViewState extends State<AddItemView> {
                     child: SizedBox(
                       height: 16,
                       child: TextFormField(
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: "-",
                           isCollapsed: true,
                           border: InputBorder.none,
                         ),
+                        onChanged: (value) {
+                          context
+                              .read<AddItemBloc>()
+                              .add(ItemPriceChangedEvent(itemPrice: value));
+                        },
                       ),
                     ),
                   ),
@@ -212,17 +224,19 @@ class _AddItemViewState extends State<AddItemView> {
                         .subtitle1
                         .copyWith(color: Colors.grey),
                   ),
-                  Flexible(
-                    child: SizedBox(
-                      height: 16,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "-",
-                          isCollapsed: true,
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
+                  BlocBuilder<AddItemBloc, AddItemState>(
+                    builder: (BuildContext context, state) {
+                      if (state.itemPrice != null &&
+                          state.itemPrice.isNotEmpty &&
+                          state.itemQuantity != null &&
+                          state.itemQuantity.isNotEmpty) {
+                        final currentTotal = double.parse(state.itemPrice) *
+                            double.parse(state.itemQuantity);
+                        if (currentTotal > 0.0)
+                          return Text(currentTotal.toString());
+                      }
+                      return Text("-");
+                    },
                   ),
                 ],
               ),

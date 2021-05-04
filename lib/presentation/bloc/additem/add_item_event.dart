@@ -6,6 +6,12 @@ class ItemNameChangedEvent extends AddItemEvent {
   ItemNameChangedEvent({this.itemName});
 }
 
+class ItemQuantityChangedEvent extends AddItemEvent {
+  final String itemQuantity;
+
+  ItemQuantityChangedEvent({this.itemQuantity});
+}
+
 class ItemMinimumLevelChangedEvent extends AddItemEvent {
   final String itemMinimumLevel;
 
@@ -13,9 +19,9 @@ class ItemMinimumLevelChangedEvent extends AddItemEvent {
 }
 
 class ItemPriceChangedEvent extends AddItemEvent {
-  final String itemPriceChangedEvent;
+  final String itemPrice;
 
-  ItemPriceChangedEvent({this.itemPriceChangedEvent});
+  ItemPriceChangedEvent({this.itemPrice});
 }
 
 class ItemTotalValueChangedEvent extends AddItemEvent {

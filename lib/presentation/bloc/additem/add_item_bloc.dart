@@ -12,10 +12,12 @@ class AddItemBloc extends Bloc<AddItemEvent, AddItemState> {
   Stream<AddItemState> mapEventToState(AddItemEvent event) async* {
     if (event is ItemNameChangedEvent) {
       yield state.copyWith(itemName: event.itemName);
+    } else if (event is ItemQuantityChangedEvent) {
+      yield state.copyWith(itemQuantity: event.itemQuantity);
     } else if (event is ItemMinimumLevelChangedEvent) {
       yield state.copyWith(itemMinimumLevel: event.itemMinimumLevel);
     } else if (event is ItemPriceChangedEvent) {
-      yield state.copyWith(itemPrice: event.itemPriceChangedEvent);
+      yield state.copyWith(itemPrice: event.itemPrice);
     } else if (event is ItemTotalValueChangedEvent) {
       yield state.copyWith(itemTotalValue: event.itemTotalValue);
     } else if (event is ItemTagsChangedEvent) {
@@ -25,7 +27,7 @@ class AddItemBloc extends Bloc<AddItemEvent, AddItemState> {
     } else if (event is ItemBarcodeChangedEvent) {
       yield state.copyWith(itemBarcode: event.itemBarcode);
     } else if (event is ItemPriceChangedEvent) {
-      yield state.copyWith(itemPrice: event.itemPriceChangedEvent);
+      yield state.copyWith(itemPrice: event.itemPrice);
     } else if (event is NewItemSubmitted) {}
   }
 }

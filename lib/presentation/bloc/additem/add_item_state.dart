@@ -14,7 +14,7 @@ class AddItemState extends Equatable {
 
   AddItemState({
     this.itemName,
-    this.itemQuantity,
+    this.itemQuantity = "1",
     this.itemMinimumLevel,
     this.itemPrice,
     this.itemTotalValue,
