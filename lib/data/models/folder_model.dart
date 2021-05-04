@@ -56,4 +56,10 @@ class FolderModel extends BaseModel {
   fromJson(Map<String, Object> json) {
     return FolderModel.fromJson(json);
   }
+
+  @override
+  Map<String, Object> toJsonOffline() {
+    // TODO: implement toJsonOffline
+    throw UnimplementedError();
+  }
 }

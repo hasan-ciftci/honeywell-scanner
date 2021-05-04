@@ -100,4 +100,28 @@ class ItemModel extends BaseModel {
   fromJson(Map<String, Object> json) {
     return ItemModel.fromJson(json);
   }
+
+  @override
+  Map<String, dynamic> toJsonOffline() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['itemFolderId'] = this.itemFolderId;
+    data['itemTitle'] = this.itemTitle;
+    data['itemQuantity'] = this.itemQuantity;
+    data['itemMinLevel'] = this.itemMinLevel;
+    data['itemPrice'] = this.itemPrice;
+    data['itemTag'] = this.itemTag;
+    data['itemNote'] = this.itemNote;
+    data['itemBarcode'] = this.itemBarcode;
+    data['itemQrLabel'] = this.itemQrLabel;
+
+    data['itemCustomField'] = this.itemCustomField;
+    data['itemCreatedOn'] = this.itemCreatedOn;
+    data['itemCreatedBy'] = this.itemCreatedBy;
+    data['itemStatus'] = this.itemStatus;
+
+    data['itemTypeId'] = this.itemTypeId;
+    data['itemCurrency'] = this.itemCurrency;
+    data['itemQuantityType'] = this.itemQuantityType;
+    return data;
+  }
 }

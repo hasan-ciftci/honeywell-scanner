@@ -1,3 +1,5 @@
+import 'package:envanter/core/extension/string_parse.dart';
+import 'package:envanter/data/repositories/add_item_repository.dart';
 import 'package:envanter/data/repositories/items_repository.dart';
 import 'package:envanter/presentation/bloc/additem/add_item_bloc.dart';
 import 'package:envanter/presentation/bloc/additem/add_item_event.dart';
@@ -65,19 +67,48 @@ class _AddItemViewState extends State<AddItemView> {
       builder: (BuildContext context, state) {
         return Opacity(
           opacity: state.isValidItemName ? 1 : 0,
-          child: Container(
-            margin: EdgeInsets.only(right: 16.0),
-            padding: EdgeInsets.all(6.0),
-            decoration: BoxDecoration(
-              color: Color(0xFFe22236),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              "Kaydet",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: Colors.white),
+          child: GestureDetector(
+            onTap: () async {
+              try {
+                context.read<AddItemRepository>().saveItem(
+                      itemFolderId: 1,
+                      itemTitle: state.itemName ?? "",
+                      itemQuantity:
+                          state.itemQuantity.parseInt(defaultValue: 0),
+                      itemMinLevel:
+                          state.itemMinimumLevel.parseInt(defaultValue: 0),
+                      itemPrice: state.itemPrice.parseDouble(defaultValue: 0.0),
+                      itemTag: state.itemTags ?? "",
+                      itemNote: state.itemNotes ?? "",
+                      itemBarcode: state.itemBarcode ?? "",
+                      itemQrLabel: state.itemBarcode ?? "",
+                      itemCreatedOn: DateTime.now().toIso8601String(),
+                      itemCreatedBy: 1,
+                      itemTypeId: 1,
+                      itemCurrency: 1,
+                      itemPhoto: "",
+                      itemCustomField: "",
+                      itemQuantityType: 0,
+                      itemStatus: 0,
+                    );
+              } catch (e) {
+                print(e);
+              }
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 16.0),
+              padding: EdgeInsets.all(6.0),
+              decoration: BoxDecoration(
+                color: Color(0xFFe22236),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                "Kaydet",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(color: Colors.white),
+              ),
             ),
           ),
         );

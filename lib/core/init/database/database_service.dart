@@ -27,15 +27,10 @@ class DatabaseService {
   String itemNote = "itemNote";
   String itemBarcode = "itemBarcode";
   String itemQrLabel = "itemQrLabel";
-  String itemPhoto = "itemPhoto";
   String itemCustomField = "itemCustomField";
   String itemCreatedOn = "itemCreatedOn";
   String itemCreatedBy = "itemCreatedBy";
   String itemStatus = "itemStatus";
-  String itemDeletedOn = "itemDeletedOn";
-  String itemDeletedBy = "itemDeletedBy";
-  String itemModifiedOn = "itemModifiedOn";
-  String itemModifiedBy = "itemModifiedBy";
   String itemTypeId = "itemTypeId";
   String itemCurrency = "itemCurrency";
   String itemQuantityType = "itemQuantityType";
@@ -52,19 +47,29 @@ class DatabaseService {
   String folderModifiedOn = "folderModifiedOn";
   String folderModifiedBy = "folderModifiedBy";
 
+  Future open() async {
+    database = await openDatabase(
+      _databaseName,
+      version: _version,
+      onCreate: (db, version) async {
+        await createTable(db);
+      },
+    );
+  }
+
   Future<bool> insertItem<T extends BaseModel>(T model) async {
-    if (database != null) open();
+    if (database == null) await open();
 
     final insertedItem = await database.insert(
       _itemTable,
-      model.toJson(),
+      model.toJsonOffline(),
     );
 
     return insertedItem != null;
   }
 
   Future<bool> insertFolder<T extends BaseModel>(T model) async {
-    if (database != null) open();
+    if (database == null) open();
 
     final insertedFolder = await database.insert(
       _folderTable,
@@ -72,16 +77,6 @@ class DatabaseService {
     );
 
     return insertedFolder != null;
-  }
-
-  Future open() async {
-    database = await openDatabase(
-      _databaseName,
-      version: _version,
-      onCreate: (db, version) {
-        createTable(db);
-      },
-    );
   }
 
   Future<void> createTable(Database db) async {
@@ -97,18 +92,13 @@ class DatabaseService {
         $itemNote VARCHAR(1000), 
         $itemBarcode VARCHAR(1000),
         $itemQrLabel VARCHAR(1000),
-        $itemPhoto VARCHAR(1000),
         $itemCustomField VARCHAR(2000),
         $itemCreatedOn VARCHAR(100),
         $itemCreatedBy INTEGER,
         $itemStatus INTEGER,
-        $itemDeletedOn VARCHAR(100),
-        $itemDeletedBy INTEGER,
-        $itemModifiedOn VARCHAR(100),
-        $itemModifiedBy INTEGER,
         $itemTypeId INTEGER,
         $itemCurrency INTEGER,
-        $itemQuantityType INTEGER,
+        $itemQuantityType INTEGER
         )
         ''',
     );
@@ -125,7 +115,7 @@ class DatabaseService {
         $folderDeletedOn VARCHAR(100),
         $folderDeletedBy INTEGER,
         $folderModifiedOn VARCHAR(100),
-        $folderModifiedBy INTEGER,
+        $folderModifiedBy INTEGER
         )
         ''',
     );
