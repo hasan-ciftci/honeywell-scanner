@@ -18,16 +18,70 @@ class _AddItemViewState extends State<AddItemView> {
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: buildAppBar(),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         child: Column(
           children: [
-            buildAppBar(size),
             buildAddPhotoButton(size),
             buildItemFieldsForm(size),
           ],
         ),
       ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      leadingWidth: 0,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          buildCloseButton(),
+          buildSaveButton(),
+        ],
+      ),
+    );
+  }
+
+  IconButton buildCloseButton() {
+    return IconButton(
+      icon: Icon(
+        Icons.close,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  BlocBuilder buildSaveButton() {
+    return BlocBuilder<AddItemBloc, AddItemState>(
+      builder: (BuildContext context, state) {
+        return Opacity(
+          opacity: state.isValidItemName ? 1 : 0,
+          child: Container(
+            margin: EdgeInsets.only(right: 16.0),
+            padding: EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+              color: Color(0xFFe22236),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              "Kaydet",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.white),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -346,55 +400,6 @@ class _AddItemViewState extends State<AddItemView> {
           ),
         ),
       ),
-    );
-  }
-
-  SizedBox buildAppBar(Size size) {
-    return SizedBox(
-      height: size.height * .1,
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                child: Icon(Icons.close),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              buildSaveButton()
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  BlocBuilder buildSaveButton() {
-    return BlocBuilder<AddItemBloc, AddItemState>(
-      builder: (BuildContext context, state) {
-        return Opacity(
-          opacity: state.isValidItemName ? 1 : 0,
-          child: Container(
-            padding: EdgeInsets.all(6.0),
-            decoration: BoxDecoration(
-              color: Color(0xFFe22236),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              "Kaydet",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: Colors.white),
-            ),
-          ),
-        );
-      },
     );
   }
 }

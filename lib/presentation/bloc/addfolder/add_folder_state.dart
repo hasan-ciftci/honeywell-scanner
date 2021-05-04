@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class AddFolderState extends Equatable {
   final String folderName;
-  bool get isValidUserName => folderName != null && folderName.length > 0;
+  bool get isValidFolderName => folderName != null && folderName.length > 0;
   final String folderTags;
   final String folderNotes;
   final String folderBarcode;
