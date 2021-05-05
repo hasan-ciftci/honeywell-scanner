@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:envanter/core/extension/string_parse.dart';
 import 'package:envanter/data/repositories/add_item_repository.dart';
 import 'package:envanter/data/repositories/items_repository.dart';
@@ -116,20 +118,17 @@ class _AddItemViewState extends State<AddItemView> {
     );
   }
 
-  SizedBox buildItemFieldsForm(Size size) {
-    return SizedBox(
-      height: size.height * .55,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            buildFormTopic(),
-            buildItemNameTextField(),
-            buildMainFieldsForm(size, context),
-            SizedBox(height: 4),
-            buildExtraFieldsForm(size, context),
-          ],
-        ),
+  Padding buildItemFieldsForm(Size size) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        children: [
+          buildFormTopic(),
+          buildItemNameTextField(),
+          buildMainFieldsForm(size),
+          SizedBox(height: 4),
+          buildExtraFieldsForm(size),
+        ],
       ),
     );
   }
@@ -169,7 +168,7 @@ class _AddItemViewState extends State<AddItemView> {
     );
   }
 
-  Table buildMainFieldsForm(Size size, BuildContext context) {
+  Table buildMainFieldsForm(Size size) {
     return Table(
       border: TableBorder.all(color: Colors.grey, width: 0.5),
       children: [
@@ -332,7 +331,9 @@ class _AddItemViewState extends State<AddItemView> {
     );
   }
 
-  Table buildExtraFieldsForm(Size size, BuildContext context) {
+  Table buildExtraFieldsForm(Size size) {
+    bool isNoteExists = false;
+
     return Table(
       border: TableBorder.all(color: Colors.grey, width: 0.5),
       children: [
@@ -358,25 +359,54 @@ class _AddItemViewState extends State<AddItemView> {
           ),
         ]),
         TableRow(children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: SizedBox(
-              height: size.height * .06,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(
-                    "Notlar",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        .copyWith(color: Colors.grey),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Notlar " * 1,
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              .copyWith(color: Colors.grey),
+                        ),
+                        BlocBuilder<AddItemBloc, AddItemState>(
+                          builder: (BuildContext context, state) {
+                            if (state.itemNotes != null &&
+                                state.itemNotes.isNotEmpty) {
+                              isNoteExists = true;
+                            }
+                            return Visibility(
+                              visible: isNoteExists,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  "Notlar " * 4,
+                                  maxLines: 5,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
                   ),
                   Icon(Icons.arrow_right)
                 ],
               ),
             ),
-          ),
+          )
         ]),
         TableRow(children: [
           Padding(
